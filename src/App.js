@@ -281,17 +281,8 @@ class App extends Component {
       }
       const response = await fetch('https://a4b-ce.ngrok.io/provider', config);
       const json = await response.json();
-      // redirect
+      // Redirect
       window.location = url;
-      // const json = await response.json();
-      // if (await json.token) {
-      //   await this.setState({
-      //     connected: true,
-      //     token: json.token,
-      //     elementSelected: elementSelected.length > 0 ? elementSelected[0] : null,
-      //     configs,
-      //   });
-      // }
     }
     request();
   }

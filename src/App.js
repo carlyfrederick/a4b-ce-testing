@@ -272,6 +272,8 @@ class App extends Component {
   submit() {
     const { token, skillSelected } = this.state;
     console.log('submit logic here');
+    console.log('token: ', token);
+    console.log('selected skill: ', skillSelected.name);
   }
 
   /**
@@ -284,6 +286,7 @@ class App extends Component {
       connected,
       configs,
       token,
+      skillSelected
     } = this.state;
     return (
       <div className="App">
@@ -327,35 +330,36 @@ class App extends Component {
                   onClick={() => this.authenticate()}>Connect</button>
               </div> : null
           }
-           <div>
-              <div>Select your Alexa Skill to deploy:</div>
-              <div>
-                {
-                  skills.map(s => <div style={{ padding: '10px 24px' }} key={s.key}>
-                    <input
-                      type={'radio'}
-                      name={'test'}
-                      onChange={() => this.selectSkill(s)}
-                    />{s.name}<div style={{ fontStyle: 'italic', fontSize: '10px' }}>{` ${s.description}`}</div>
-                  </div>)
-                }
-              </div>
-            </div> 
-          <button
-            onClick={() => this.submit()}
-            style={{
-              cursor: 'pointer',
-              padding: 5,
-              margin: '20px 0px',
-              width: 100
-            }}>Submit</button>
+          {
+            connected && elementSelected.name ?
+             <div>
+                <div>{`Your ${elementSelected.name} instance token is: ${token}`}</div>
+                <div>Select your Alexa Skill to deploy:</div>
+                <div>
+                  {
+                    skills.map(s => <div style={{ padding: '10px 24px' }} key={s.key}>
+                      <input
+                        type={'radio'}
+                        name={'test'}
+                        onChange={() => this.selectSkill(s)}
+                      />{s.name}<div style={{ fontStyle: 'italic', fontSize: '10px' }}>{` ${s.description}`}</div>
+                    </div>)
+                  }
+                </div>
+              <button
+                disabled={!skillSelected}
+                onClick={() => this.submit()}
+                style={{
+                  cursor: !skillSelected ? 'normal' : 'pointer',
+                  padding: 5,
+                  margin: '20px 0px',
+                  width: 100
+                }}>Submit</button>
+              </div> : null
+          }
       </div>
     );
   }
 }
 
 export default App;
-
-
-// To DO - add back connected logic and the below for radio buttons and submit button
-// <div>{`Your ${elementSelected.name} instance token is: ${token}`}</div>

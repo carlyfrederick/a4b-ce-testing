@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-//import queryString from 'query-string';
+import queryString from 'query-string';
 
 /*
     ******************************************************************************
@@ -19,11 +19,11 @@ const elements = [
     name: 'Jira',
     authType: 'basic'
   },
-  // {
-  //   key: 'zendesk',
-  //   name: 'Zendesk',
-  //   authType: 'oauth2'
-  // }
+  {
+    key: 'zendesk',
+    name: 'Zendesk',
+    authType: 'oauth2'
+  }
 ];
 
 // Skill Configuration
@@ -54,7 +54,7 @@ const getConfig = {
 };
 
 // Registered URL for App
-const callbackUrl = 'localhost:3000';
+const callbackUrl = 'https://29870603.ngrok.io/';
 
 
 /**
@@ -85,8 +85,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const queryParams = {};
-    //const queryParams = queryString.parse(window.location.search);
+    //const queryParams = {};
+    const queryParams = queryString.parse(window.location.search);
     // If an OAuth code is detected with proper parameters, use it to create an instance
     const state = queryParams.state;
     const code = queryParams.code;
@@ -165,7 +165,11 @@ class App extends Component {
           elementKey: elementSelected.key,
           configs,
         }));
-        queryParams = `apiKey=${apiKey}&apiSecret=${apiSecret}&callbackUrl=${callbackUrl}&state=${state}`;
+        queryParams = `apiKey=${apiKey[0].value}&apiSecret=${apiSecret[0].value}&callbackUrl=${callbackUrl}&state=${state}`;
+        if (elementSelected.key === 'zendesk') {
+          const siteAddress = configs.filter(conf => conf.key === 'zendesk.subdomain');
+          queryParams = `apiKey=${apiKey[0].value}&apiSecret=${apiSecret[0].value}&callbackUrl=${callbackUrl}&siteAddress=${siteAddress[0].value}&state=${state}`;
+        }
       };
       const request = async () => {
         const response = await fetch(`${baseUrl}/elements/${elementSelected.key}/oauth/url?${queryParams}`, getConfig);
@@ -212,8 +216,10 @@ class App extends Component {
 
   createInstanceFromOAuth(params) {
     const state = JSON.parse(window.atob(params.state));
+    console.log('creating', state)
     const elementKey = state.elementKey;
     const configs = state.configs;
+    const code = params && params.code ? params.code : {};
     const name = configs.filter(c => c.key === 'instanceName');
     const apiKey = configs.filter(c => c.key === 'oauth.api.key');
     const apiSecret = configs.filter(c => c.key === 'oauth.api.secret');
@@ -225,6 +231,9 @@ class App extends Component {
       "tags": [
         "a4b_ce_demo"
       ],
+      providerData: {
+        code
+      },
       name: name[0] && name[0].value ? name[0].value : (new Date()).getTime(),
       configuration: {
         "authentication.type": "oauth2",

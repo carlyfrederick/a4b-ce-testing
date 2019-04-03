@@ -274,7 +274,9 @@ class App extends Component {
     const request = async () => {
       const config = {
         method: 'POST',
-        //headers: getConfig.headers,
+        headers: headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(body)
       }
       const response = await fetch('https://a4b-ce.ngrok.io/provider', config);

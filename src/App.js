@@ -209,7 +209,6 @@ class App extends Component {
 
   createInstanceFromOAuth(params) {
     const state = JSON.parse(window.atob(params.state));
-    console.log('creating', state)
     const elementKey = state.elementKey;
     const configs = state.configs;
     const code = params && params.code ? params.code : {};
@@ -262,32 +261,37 @@ class App extends Component {
    */
   submit() {
     const { token } = this.state;
-    console.log('submit logic here');
-    console.log('token: ', token);
+    const code = uuidv4();
+    const authRedirect = localStorage.getItem('authRedirect');
+    const authState = localStorage.getItem('authState');
+    const url = authRedirect + '?code=' + code + '&state=' + authState;
     const body = {
-      authRedirect: localStorage.getItem('authRedirect'),
-      authState: localStorage.getItem('authState'),
+      authRedirect,
+      authState,
       instanceToken: token,
-      code: uuidv4(),
+      code
     };
-    // const request = async () => {
-    //   const config = {
-    //     method: 'POST',
-    //     headers: getConfig.headers,
-    //     body: JSON.stringify(body)
-    //   }
-    //   const response = await fetch('https://a4b-ce.ngrok.io/provider', config);
-    //   const json = await response.json();
-    //   if (await json.token) {
-    //     await this.setState({
-    //       connected: true,
-    //       token: json.token,
-    //       elementSelected: elementSelected.length > 0 ? elementSelected[0] : null,
-    //       configs,
-    //     });
-    //   }
-    // }
-    // request();
+    const request = async () => {
+      const config = {
+        method: 'POST',
+        //headers: getConfig.headers,
+        body: JSON.stringify(body)
+      }
+      const response = await fetch('https://a4b-ce.ngrok.io/provider', config);
+      const json = await response.json();
+      // redirect
+      window.location = url;
+      // const json = await response.json();
+      // if (await json.token) {
+      //   await this.setState({
+      //     connected: true,
+      //     token: json.token,
+      //     elementSelected: elementSelected.length > 0 ? elementSelected[0] : null,
+      //     configs,
+      //   });
+      // }
+    }
+    request();
   }
 
   /**
@@ -295,7 +299,6 @@ class App extends Component {
    * @return {object} React Component
    */
   render() {
-    console.log(uuidv4());
     const {
       elementSelected,
       connected,

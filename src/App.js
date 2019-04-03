@@ -334,7 +334,7 @@ class App extends Component {
             connected && elementSelected.name ?
              <div>
                 <div>{`Your ${elementSelected.name} instance token is: ${token}`}</div>
-                <div>Select your Alexa Skill to deploy:</div>
+                <div style={{ marginTop: 10 }}>Select your Alexa Skill to deploy:</div>
                 <div>
                   {
                     skills.map(s => <div style={{ padding: '10px 24px' }} key={s.key}>

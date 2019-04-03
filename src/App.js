@@ -92,6 +92,9 @@ class App extends Component {
   componentDidMount() {
     //const queryParams = {};
     const queryParams = queryString.parse(window.location.search);
+    if (queryParams.authState) {
+      console.log(queryParams.authState)
+    }
     // If an OAuth code is detected with proper parameters, use it to create an instance
     const state = queryParams.state;
     const code = queryParams.code;
@@ -287,6 +290,24 @@ class App extends Component {
     const { token, skillSelected } = this.state;
     console.log('submit logic here');
     console.log('token: ', token);
+    // const request = async () => {
+    //   const config = {
+    //     method: 'POST',
+    //     headers: getConfig.headers,
+    //     body: JSON.stringify(postInstanceBody)
+    //   }
+    //   const response = await fetch('https://a4b-ce.ngrok.io/provider', config);
+    //   const json = await response.json();
+    //   if (await json.token) {
+    //     await this.setState({
+    //       connected: true,
+    //       token: json.token,
+    //       elementSelected: elementSelected.length > 0 ? elementSelected[0] : null,
+    //       configs,
+    //     });
+    //   }
+    // }
+    // request();
     console.log('selected skill: ', skillSelected.name);
   }
 

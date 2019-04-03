@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import queryString from 'query-string';
+//import queryString from 'query-string';
 
 // Element Configuration
 /*
@@ -85,7 +85,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const queryParams = queryString.parse(window.location.search);
+    const queryParams = {};
+    //const queryParams = queryString.parse(window.location.search);
     // If an OAuth code is detected with proper parameters, use it to create an instance
     const state = queryParams.state;
     const code = queryParams.code;

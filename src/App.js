@@ -274,7 +274,7 @@ class App extends Component {
     const request = async () => {
       const config = {
         method: 'POST',
-        headers: headers: {
+        headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)

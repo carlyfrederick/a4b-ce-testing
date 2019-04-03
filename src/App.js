@@ -31,21 +31,6 @@ const elements = [
   }
 ];
 
-// Skill Configuration
-const skills = [
-  {
-    key: 'create_ticket',
-    name: 'Create ticket',
-    description: 'Ask Alexa to create an IT ticket from within your meeting room'
-  },
-  {
-    key: 'test',
-    name: 'Test skill',
-    description: 'Test skill description'
-  }
-];
-
-
 // CE Staging API Base URL
 const baseUrl = 'https://staging.cloud-elements.com/elements/api-v2';
 
@@ -78,13 +63,11 @@ class App extends Component {
       connected: false,
       configs: [],
       token: null,
-      skillSelected: null,
     };
     this.selectElement = this.selectElement.bind(this);
     this.fetchConfigs = this.fetchConfigs.bind(this);
     this.updateConfig = this.updateConfig.bind(this);
     this.authenticate = this.authenticate.bind(this);
-    this.selectSkill = this.selectSkill.bind(this);
     this.submit = this.submit.bind(this);
     this.createInstanceFromOAuth = this.createInstanceFromOAuth.bind(this);
   }
@@ -93,7 +76,6 @@ class App extends Component {
     //const queryParams = {};
     const queryParams = queryString.parse(window.location.search);
     if (queryParams.authState && queryParams.authRedirect) {
-      console.log('here')
       localStorage.setItem('authState', queryParams.authState);
       localStorage.setItem('authRedirect', queryParams.authRedirect);
     }
@@ -273,23 +255,12 @@ class App extends Component {
   }
 
   /**
-   * Set the state with the selected Amazon Skill
-   * @param  {object} s selected skill object
-   * @return {void}
-   */
-  selectSkill(s) {
-    this.setState({
-      skillSelected: s
-    });
-  }
-
-  /**
    * Submit the full form, which will kick off logic
    * to deploy the Alexa Skill with the generated instance token
    * @return {void}
    */
   submit() {
-    const { token, skillSelected } = this.state;
+    const { token } = this.state;
     console.log('submit logic here');
     console.log('token: ', token);
     // const request = async () => {
@@ -310,7 +281,6 @@ class App extends Component {
     //   }
     // }
     // request();
-    console.log('selected skill: ', skillSelected.name);
   }
 
   /**
@@ -323,7 +293,6 @@ class App extends Component {
       connected,
       configs,
       token,
-      skillSelected
     } = this.state;
     return (
       <div className="App">
@@ -371,23 +340,10 @@ class App extends Component {
             connected && elementSelected.name ?
              <div>
                 <div>{`Your ${elementSelected.name} instance token is: ${token}`}</div>
-                <div style={{ marginTop: 10 }}>Select your Alexa Skill to deploy:</div>
-                <div>
-                  {
-                    skills.map(s => <div style={{ padding: '10px 24px' }} key={s.key}>
-                      <input
-                        type={'radio'}
-                        name={'test'}
-                        onChange={() => this.selectSkill(s)}
-                      />{s.name}<div style={{ fontStyle: 'italic', fontSize: '10px' }}>{` ${s.description}`}</div>
-                    </div>)
-                  }
-                </div>
               <button
-                disabled={!skillSelected}
                 onClick={() => this.submit()}
                 style={{
-                  cursor: !skillSelected ? 'normal' : 'pointer',
+                  cursor: 'pointer',
                   padding: 5,
                   margin: '20px 0px',
                   width: 100

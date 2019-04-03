@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 //import queryString from 'query-string';
 
-// Element Configuration
 /*
     ******************************************************************************
     Simply add a new Element object into the list below to deploy a new connector!
     ******************************************************************************
 */
+// Element Configuration
 const elements = [
   {
     key: 'servicenow',
@@ -217,6 +217,7 @@ class App extends Component {
     const name = configs.filter(c => c.key === 'instanceName');
     const apiKey = configs.filter(c => c.key === 'oauth.api.key');
     const apiSecret = configs.filter(c => c.key === 'oauth.api.secret');
+    const elementSelected = elements.filter(e => e.key === elementKey);
     let postInstanceBody = {
       "element": {
         "key": elementKey
@@ -243,7 +244,9 @@ class App extends Component {
       if (await json.token) {
         await this.setState({
           connected: true,
-          token: json.token
+          token: json.token,
+          elementSelected: elementSelected.length > 0 ? elementSelected[0] : null,
+          configs,
         });
       }
     }

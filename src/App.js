@@ -93,7 +93,9 @@ class App extends Component {
     //const queryParams = {};
     const queryParams = queryString.parse(window.location.search);
     if (queryParams.authState && queryParams.authRedirect) {
-      console.log(queryParams.authState, queryParams.authRedirect)
+      console.log('here')
+      localStorage.setItem('authState', JSON.stringify(authState));
+      localStorage.setItem('authRedirect', JSON.stringify(authRedirect));
     }
     // If an OAuth code is detected with proper parameters, use it to create an instance
     const state = queryParams.state;

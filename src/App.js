@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
+const uuidv4 = require('uuid/v4'); 
 
 /*
     ******************************************************************************
@@ -263,11 +264,17 @@ class App extends Component {
     const { token } = this.state;
     console.log('submit logic here');
     console.log('token: ', token);
+    const body = {
+      authRedirect: localStorage.getItem('authRedirect'),
+      authState: localStorage.getItem('authState'),
+      instanceToken: token,
+      code: uuidv4(),
+    };
     // const request = async () => {
     //   const config = {
     //     method: 'POST',
     //     headers: getConfig.headers,
-    //     body: JSON.stringify(postInstanceBody)
+    //     body: JSON.stringify(body)
     //   }
     //   const response = await fetch('https://a4b-ce.ngrok.io/provider', config);
     //   const json = await response.json();
@@ -288,6 +295,7 @@ class App extends Component {
    * @return {object} React Component
    */
   render() {
+    console.log(uuidv4());
     const {
       elementSelected,
       connected,
@@ -347,7 +355,7 @@ class App extends Component {
                   padding: 5,
                   margin: '20px 0px',
                   width: 100
-                }}>Submit</button>
+                }}>Setup my Skill</button>
               </div> : null
           }
       </div>

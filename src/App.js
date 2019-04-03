@@ -23,6 +23,11 @@ const elements = [
     key: 'zendesk',
     name: 'Zendesk',
     authType: 'oauth2'
+  },
+  {
+    key: 'autotaskhelpdesk',
+    name: 'Autotask',
+    authType: 'basic'
   }
 ];
 

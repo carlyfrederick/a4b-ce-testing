@@ -29,7 +29,12 @@ const elements = [
     key: 'autotaskhelpdesk',
     name: 'Autotask',
     authType: 'basic'
-  }
+  },
+  // {
+  //   key: 'freshdeskv2',
+  //   name: 'Freshdesk',
+  //   authType: 'basic'
+  // }
 ];
 
 // CE Staging API Base URL
@@ -279,7 +284,7 @@ class App extends Component {
         },
         body: JSON.stringify(body)
       }
-      const response = await fetch('https://a4b-ce.ngrok.io/provider', config);
+      const response = await fetch('https://api.demoafb.com/provider', config);
       const json = await response.json();
       // Redirect
       window.location = url;
